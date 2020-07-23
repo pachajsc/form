@@ -30,6 +30,7 @@ export const theme = createMuiTheme({
   },
 
   typography: {
+    fontFamily:"Rubik, Arial, sans-serif",
     button: {
       fontWeight: 400,
       color: "#fff",
