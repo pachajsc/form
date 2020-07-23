@@ -1,4 +1,6 @@
 import React from 'react';
+import AdmFirstStep from "./AdmFirstStep"
+import AdmSecondStep from "./AdmSecondStep"
 import { Typography, Grid, Button, Stepper, Step, StepLabel } from '@material-ui/core';
 
 function getSteps() {
@@ -8,9 +10,19 @@ function getSteps() {
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return <span><strong>1</strong> Datos Personales</span>;
+      return (
+        <>
+          <span><strong>1</strong> Datos Personales</span>
+          <AdmFirstStep />
+        </>
+      );
     case 1:
-      return <span><strong>2</strong> Datos Complementarios</span>;
+      return (
+        <>
+          <span><strong>2</strong> Datos Complementarios</span>
+          <AdmSecondStep />
+        </>
+      );
     default:
       return 'Unknown stepIndex';
   }
@@ -34,7 +46,7 @@ export default function AdmissionRequest() {
   };
 
   return (
-    <div style={{maxWidth:"1140px", margin:"auto"}}>
+    <div style={{ maxWidth: "1140px", margin: "auto" }}>
 
       <Typography component="h4" variant="h4" align="center">Solicitud de Admisión</Typography>
       <Stepper activeStep={activeStep} alternativeLabel >
@@ -47,7 +59,7 @@ export default function AdmissionRequest() {
       <div>
         {activeStep === steps.length ? (
           <Grid
-          container
+            container
             direction="row"
             justify="center"
             alignItems="flex-start">
@@ -59,7 +71,7 @@ export default function AdmissionRequest() {
               <Typography component="h4" variant="h4">{getStepContent(activeStep)}</Typography>
 
               <Grid
-              container
+                container
                 direction="row"
                 justify="center"
                 alignItems="flex-start">
