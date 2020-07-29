@@ -3,39 +3,24 @@ import AdmFirstStep from "./AdmFirstStep"
 import AdmSecondStep from "./AdmSecondStep"
 import { Typography, Grid, Button, Stepper, Step, StepLabel } from '@material-ui/core';
 
-function getSteps() {
-  return ['DATOS PERSONALES', 'DATOS ACADÉMICOS Y PROFESIONALES'];
-}
-
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return (
-        <>
-          <span><strong>1</strong> Datos Personales</span>
-          <AdmFirstStep />
-        </>
-      );
-    case 1:
-      return (
-        <>
-          <span><strong>2</strong> Datos Complementarios</span>
-          <AdmSecondStep />
-        </>
-      );
-    default:
-      return 'Unknown stepIndex';
-  }
-}
-
 export default function AdmissionRequest() {
+  const getSteps = () => {
+    return ['DATOS PERSONALES', 'DATOS ACADÉMICOS Y PROFESIONALES'];
+  }
 
   const [activeStep, setActiveStep] = React.useState(0);
+  const [form1, setForm1] = React.useState(null);
+  const [form2, setForm2] = React.useState(null);
+
   const steps = getSteps();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
+
+  const handleFinish = () => {
+    setActiveStep(2);
+  }
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -44,6 +29,28 @@ export default function AdmissionRequest() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const getStepContent = (stepIndex) => {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <>
+            <span><strong>1AdmFirstStep</strong> Datos Personales</span>
+            <AdmFirstStep formValues={form1 || undefined} submitForm={(form1) => setForm1(form1)} nextFn={handleNext} backFn={handleBack} />
+          </>
+        );
+      case 1:
+        return (
+          <>
+            <span><strong>2</strong> Datos Complementarios</span>
+            <AdmSecondStep submitForm={(form2) => setForm2(form2)} nextFn={handleNext} backFn={handleBack} />
+          </>
+        );
+      default:
+        return 'Unknown stepIndex';
+    }
+  }
+
 
   return (
     <div style={{ maxWidth: "1140px", margin: "auto" }}>
@@ -57,7 +64,7 @@ export default function AdmissionRequest() {
         ))}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
+        {activeStep === steps.length && (
           <Grid
             container
             direction="row"
@@ -66,30 +73,15 @@ export default function AdmissionRequest() {
             <Typography ></Typography>
             <Button onClick={handleReset}>Reset</Button>
           </Grid>
-        ) : (
-            <div>
-              <Typography component="h4" variant="h4">{getStepContent(activeStep)}</Typography>
-
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="flex-start">
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                  >
-                    Back
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-                </div>
-              </Grid>
-
-            </div>
-          )}
+        )}
+        <Typography component="h4" variant="h4">{getStepContent(activeStep)}</Typography>
+        {activeStep === 2 && (
+          <p>
+            <span>{JSON.stringify(form1)}</span>
+            <br/>
+            <span>{JSON.stringify(form2)}</span>
+          </p>
+        )}
       </div>
     </div>
   );
