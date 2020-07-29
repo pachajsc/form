@@ -59,12 +59,20 @@ export const Input = ({ name, type = 'text', label, defaultValue = null, onChang
   const [isValidated, setIsValidated] = React.useState(null);
 
   const checkValidation = () => {
-    if (isSubmited) {
-      const isValid = validate(value);
-      inputRef.current.goodOrBad = isValid;
+    const isValid = validate(value);
+    inputRef.current.goodOrBad = isValid;
+    if (inputRef.current.isSubmited || isSubmited) {
       setIsValidated(isValid);
     }
   }
+
+  React.useEffect(() => {
+    console.log('inputRef', inputRef);
+    if (inputRef && inputRef.current && inputRef.current.goodOrBad === undefined) {
+      inputRef.current.isSubmited = false;
+      inputRef.current.goodOrBad = null;
+    }
+  }, [inputRef]);
 
   React.useEffect(() => {
     onChange(value);
@@ -95,23 +103,19 @@ export const Form = ({ children, onSubmit }) => {
   const submit = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log('QUE VINO ACA', formRef);
-    /*
+    
     let children = [];
     let result = true;
 
     for (let index = 0; index < formRef.current.children.length; index++) {
       const element = formRef.current.children[index];
-      console.log('element', [element], element.goodOrBad, element.localName);
-      if (element.goodOrBad !== undefined) children.push(element);
+      if (element.goodOrBad !== undefined) {
+        element.isSubmited = true;
+        children.push(element);
+        if(element.goodOrBad === false) result = false;
+      }
     }
-
-    for (let index = 0; index < children.length; index++) {
-      const element = children[index];
-      if (!element.goodOrBad) result = false;
-    }
-    */
-    onSubmit();
+    onSubmit(result);
   }
   return (
     <form ref={formRef} onSubmit={submit}>
