@@ -6,7 +6,10 @@ import {
   helperValidateAge,
   helperValidatePhone,
 } from "../../../helper/formValidation";
-const AdmSecondStep = ({ submitForm, nextFn, backFn }) => {
+const AdmSecondStep = ({ setForm, formValues, nextFn, backFn }) => {
+  // SetForm guarda en el padre el form2
+  // formValues seria el objeto que el padre le da para pre cargar el formulario
+  // re hacer el form sin useFOrm. 
 
   const validateFn = (values) => {
   let errors = {};
@@ -17,7 +20,7 @@ const AdmSecondStep = ({ submitForm, nextFn, backFn }) => {
   //useForm
   const { handleChange, handleSubmit, values, errors, validate } = useForm({
     callback: (values) => {
-      submitForm(values);
+      setForm(values);
       nextFn();
     },
     onChange: validateFn,

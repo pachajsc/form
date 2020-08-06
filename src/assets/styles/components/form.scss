@@ -1,3 +1,6 @@
+#countryPhone {
+  & > span { display: none !important; }
+}
 form {
     padding: 20px;
     .MuiButton-containedPrimary,

@@ -28,10 +28,14 @@ function SelectCountries(props) {
         {({ form, field }) => {
         const { setFieldValue } = form
         const { value } = field
+
+        const SingleValue = props.singleValue || null;
         return (
             
             <Select
-            formatOptionLabel={formatOptionLabel}
+
+            formatOptionLabel={props.customOptionRender || formatOptionLabel}
+            components={{ SingleValue }}
             options={phoneItems}
             placeholder={label} 
             id={name}

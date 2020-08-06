@@ -15,7 +15,7 @@ function FormField (props) {
     case 'email':
         return <EmailField {...rest} /> 
     case 'textarea':
-        return <InputField {...rest} textarea/>   
+        return <InputField {...rest} textarea />   
     case 'checkbox':
         return <CheckboxGroup {...rest}/>
     case 'radioGroup':

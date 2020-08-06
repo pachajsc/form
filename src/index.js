@@ -10,9 +10,9 @@ import "./assets/styles/main.scss"
 ReactDOM.render(
   <ThemeProvider theme={theme}>
   <React.StrictMode>
-    {/* <ExampleForm/> */}
+    <ExampleForm/>
     {/* <RequestInfo /> */}
-    <AdmissionRequest/> 
+    { /*<AdmissionRequest/>  */ }
   </React.StrictMode>
   </ThemeProvider>
   ,

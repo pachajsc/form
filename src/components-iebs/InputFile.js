@@ -4,10 +4,11 @@ import ValidationError from "./ValidationError"
 
 function InputFile(props) {
     const { label, name, ...rest } = props
+    const fileRef = React.useRef(null);
 
-    const validateField = files => {
+    const validateField = (niimporta) => {
         let errors
-        if(!files) {
+        if(!fileRef || fileRef.current.files.length === 0) {
             errors = `El campo ${name} es obligatorio`
         } 
         return errors      
@@ -15,7 +16,7 @@ function InputFile(props) {
 
     return (
         <div className='form-control'>
-        <Field name={name} >
+        <Field name={name} validate={validateField} >
         {({ form, field }) => {
         const { setFieldValue } = form
         const { value } = field
@@ -23,6 +24,7 @@ function InputFile(props) {
             <>
             <label for="file">{label}</label>
             <input
+            ref={fileRef}
             id={name} 
             type="file" 
             {...field}

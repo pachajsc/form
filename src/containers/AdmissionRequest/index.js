@@ -38,14 +38,14 @@ export default function AdmissionRequest() {
         return (
           <>
             <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>1</strong> Datos Personales</Typography>
-            <AdmFirstStep formValues={form1 || undefined} submitForm={(form1) => setForm1(form1)} nextFn={handleNext} backFn={handleBack} />
+            <AdmFirstStep formValues={form1 || undefined} setForm={(form1) => setForm1(form1)} nextFn={handleNext} backFn={handleBack} />
           </>
         );
       case 1:
         return (
           <>
             <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>2</strong> Datos Complementarios</Typography>
-            <AdmSecondStep submitForm={(form2) => setForm2(form2)} nextFn={handleNext} backFn={handleBack} />
+            <AdmSecondStep formValues={form2 || undefined} setForm={(form2) => setForm2(form2)} nextFn={handleNext} backFn={handleBack} />
           </>
         );
       default:
