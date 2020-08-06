@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { phoneItems } from "../../mock/country"
 import { Check, Close } from '@material-ui/icons';
 import InputPhone from "../../components/InputPhone"
@@ -25,7 +26,7 @@ function formValidateFn(values) {
   helperValidateAge(errors, values.age);
   helperValidatePhone(errors, values.phone)
   helperValidateAccept(errors, values.accept);
-  
+
   return errors;
 }
 //validate
@@ -47,11 +48,32 @@ const RequestInfo = (props) => {
   //Action
   function formValidated() {
     setNotification({ active: true });
+
+
+    const data = {
+      program: values.program,
+      name: values.name,
+      surname: values.surname,
+      email: values.email,
+      age: values.age,
+      phoneItem: values.phoneItem,
+      phone: values.phone,
+      questions: values.questions,
+      accept: values.accept
+    };
+
+    axios.post(`https://jsonplaceholder.typicode.com/users`, { data })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        window.location = "https://www.utie.com.mx/programas/maestria-oficial-marketing-digital-business/gracias/?uuid=51d52b8c-ab26-4125-a215-1c1e55e891d4&registro_id=2087824&gracias=gracias&giebs=frm_inf&chiebs=iebs&freeiebs=no&id_int=&is_new_item=true";
+       
+      })
   }
 
   return (
     <>
-      {JSON.stringify(values, null, 2)}
+      {/* {JSON.stringify(values, null, 2)} */}
       <form onSubmit={handleSubmit}>
 
         <Grid container spacing={3}>
@@ -169,9 +191,14 @@ const RequestInfo = (props) => {
 
           )}
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit" >
-              Enviar solicitud
-                        </Button>
+            <Grid container
+              direction="row"
+              justify="center"
+              alignItems="center">
+              <Button variant="contained" color="primary" type="submit" >
+                Enviar solicitud
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
 

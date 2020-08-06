@@ -1,0 +1,15 @@
+.animate-fade-in{
+    animation-name: animateSection;
+    animation-duration: 1.5s;
+}
+
+@keyframes animateSection {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}
+  
+  

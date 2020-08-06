@@ -1,107 +1,130 @@
-form{
-    padding:20px;
-    .MuiButton-containedPrimary{
-        padding:10px 25px;
-        margin:5px auto;
-        display: block;
+form {
+    padding: 20px;
+    .MuiButton-containedPrimary,
+    .MuiButton-outlinedPrimary {
+        padding: 10px 25px;
+        margin: 5px;
     }
     .MuiOutlinedInput-multiline {
         padding: 0px;
     }
-    .MuiFormHelperText-contained{
+    .MuiFormHelperText-contained {
         margin-left: 14px;
         margin-right: 14px;
         position: absolute;
         bottom: -19px;
-    }   
+    }
 }
-.MuiFormControl-root{
-    width:100%;
+.MuiFormControl-root {
+    width: 100%;
     .MuiOutlinedInput-input {
         padding: 11.5px 14px;
     }
-    .MuiInputLabel-outlined{
+    .MuiInputLabel-outlined {
         transform: translate(14px, 13px) scale(1);
-    }       
-}
-.react-select-phone{
-    &>div{
-        width:100%;
-        min-height: 42px;
-        font-size:16px;
     }
 }
-.MuiTypography-root{
-    &.error-select{
-        margin:3px 14px;
+.react-select-phone {
+    & > div {
+        width: 100%;
+        min-height: 42px;
+        font-size: 16px;
+    }
+}
+.MuiTypography-root {
+    &.error-select {
+        margin: 3px 14px;
         position: absolute;
         bottom: -21px;
     }
 }
-.content-form-box{
-    position:relative;
-    .value-country-number{
+.content-form-box {
+    position: relative;
+    .value-country-number {
         border-right: 1px solid #c8c8c8;
         position: absolute;
         left: 0;
         top: 7px;
         z-index: 5;
         height: 32px;
-        width:87px;
+        width: 87px;
         cursor: pointer;
-       span{
-           position:relative;
-           top:1px;
-       } 
-       svg{
-        position: absolute;
-        color: #aba9a9;
-        top: 6px;
-        font-size: 17px;
-       }
-        p{
+        span {
+            position: relative;
+            top: 1px;
+        }
+        svg {
+            position: absolute;
+            color: #aba9a9;
+            top: 6px;
+            font-size: 17px;
+        }
+        p {
             line-height: 30px;
-            margin-left:9px;
+            margin-left: 9px;
             color: #918f8f;
             font-size: 15px;
             white-space: nowrap;
-        
         }
     }
-    .MuiOutlinedInput-input{
+    .MuiOutlinedInput-input {
         padding: 11.5px 14px 11.5px 95px;
     }
-    .MuiInputLabel-outlined{
-        transform: translate(95px, 13px) scale(1)
+    .MuiInputLabel-outlined {
+        transform: translate(95px, 13px) scale(1);
     }
 }
-.background-outsideClick{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:0;
+.background-outsideClick {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
 }
 //validations
-.check-error{
-    .MuiIconButton-label{
-        color:#dc3545;
+.check-error {
+    .MuiIconButton-label {
+        color: #dc3545;
     }
 }
-.validate-icon{
-    position:absolute;
-    right:33px;
-    margin-top:9px;
-    z-index:5;
-    &.icon-success{color:#28a745;}
-    &.icon-error{color:#dc3545;}
+.validate-icon {
+    position: absolute;
+    right: 33px;
+    margin-top: 9px;
+    z-index: 5;
+    &.icon-success {
+        color: #28a745;
+    }
+    &.icon-error {
+        color: #dc3545;
+    }
 }
+.success-field {
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+    .MuiOutlinedInput-notchedOutline {
+        border: 1px solid #28a745;
+    }
+    .MuiFormLabel-root.Mui-focused,
+    .MuiInputLabel-outlined.MuiInputLabel-shrink,
+    .MuiInputLabel-outlined.MuiInputLabel-shrink {
+        color: #28a745;
+    }
+}
+
+//validate
 .success-field{
-    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline{
-        border: 1px solid #28a745;;
-    }
-    .MuiFormLabel-root.Mui-focused, .MuiInputLabel-outlined.MuiInputLabel-shrink, .MuiInputLabel-outlined.MuiInputLabel-shrink{
-        color:#28a745;
-    }   
+    color: #28a745;
 }
+.MuiFormHelperText-root.Mui-error {
+    color: #f44336;
+    margin: 0;
+    font-size: 0.75rem;
+    margin-top: 3px;
+    text-align: left;
+    font-family: Rubik, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.66;
+}
+
+

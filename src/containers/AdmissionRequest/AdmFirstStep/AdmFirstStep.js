@@ -1,71 +1,41 @@
 import React from "react";
 import { TextField, Grid, Button } from '@material-ui/core';
-import { Check, Close } from '@material-ui/icons';
-import useForm from "../../../helper/useForm"
+import FormControl from "../../../components-iebs/FormControl"
+import FormField from "../../../components-iebs/FormField"
 
-const AdmFirstStep = ({ submitForm, nextFn, backFn, formValues = { field1: "", field2: "", field3: "" } }) => {
-  const validateFn = (values) => {
-    const error = {};
-    error.field1 = (values.field1 === '') ? 'no tiene que estar vacio' : null;
-    error.field2 = (values.field2 === '') ? 'no tiene que estar vacio' : null;
-    error.field3 = (values.field3 === '') ? 'no tiene que estar vacio' : null;
-    return error;
-  }
-  //useForm
-  const { handleChange, handleSubmit, values, errors, validate } = useForm({
-    callback: (values) => {
-      submitForm(values);
-      nextFn();
-    },
-    onChange: validateFn,
-    errorsCallback: (values) => (values),
-    validate: validateFn,
-    formBody: formValues,
-  });
-  //useForm
+const AdmFirstStep = ({ nextFn }) => {
+  const [formValues, setFormValues] = React.useState({name: "", surname: "", email: ""});
 
-  return (
+  const onSubmit = values => {
+    console.log('Form data', values)
+    nextFn()
+    values()
+}
+  return(
     <>
-      <form>
-        <Grid container>
-          <Grid item xs={12}>
-            {errors.field1 === null && (<Check className="validate-icon icon-success" />)}
-            {errors.field1 && (<Close className="validate-icon icon-error" />)}
-            <TextField value={values.field1} onChange={(e) => handleChange('field1', e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            {errors.field2 === null && (<Check className="validate-icon icon-success" />)}
-            {errors.field2 && (<Close className="validate-icon icon-error" />)}
-            <TextField value={values.field2} onChange={(e) => handleChange('field2', e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            {errors.field3 === null && ( <Check className="validate-icon icon-success" />)}
-            {errors.field3 && (<Close className="validate-icon icon-error" />)}
-            <TextField value={values.field3} onChange={(e) => handleChange('field3', e.target.value)} />
-          </Grid>
+    <FormControl initialValues={formValues} onSubmit={onSubmit} >
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+            <FormField name="name" label="Nombre" type="text"/>
         </Grid>
-        <div>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="flex-start">
-            <div>
-              <Button
-                disabled={true}
-                onClick={backFn}
-              >
-                Back
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Next
-              </Button>
-            </div>
-          </Grid>
-        </div>
-      </form>
+        <Grid item xs={12}>
+            <FormField name="surname" label="Apellido" type="text"/>
+        </Grid>
+        <Grid item xs={12}>
+            <FormField typeControl="email"/>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Button variant="contained" color="primary" type="submit" style={{ marginTop: 25 }}>
+            Continuar
+        </Button>
+      </Grid>
+      
+    </FormControl>
     </>
   )
+
+  
 }
 
 export default AdmFirstStep
