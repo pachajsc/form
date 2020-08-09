@@ -12,7 +12,7 @@ const initialValues = {
   country: '',
   birthDate: new Date(),
   phone: '',
-  countryPhone: '',
+  countryPhone: {id: 1, label: "España", iso3166_a2: "es", value: "0034"},
   fileImage: null
 }
 const onSubmit = values => {
