@@ -1,72 +1,47 @@
 import React from "react";
 import { TextField, Grid, Button } from '@material-ui/core';
-import { Check, Close } from '@material-ui/icons';
-import useForm from "../../../helper/useForm"
-import {
-  helperValidateAge,
-  helperValidatePhone,
-} from "../../../helper/formValidation";
-const AdmSecondStep = ({ submitForm, nextFn, backFn }) => {
+import FormControl from "../../../components-iebs/FormControl"
+import FormField from "../../../components-iebs/FormField"
 
-  const validateFn = (values) => {
-  let errors = {};
-  helperValidateAge(errors, values.age);
-  helperValidatePhone(errors, values.phone);
-  return errors;
+
+const AdmSecondStep =({ nextFn, submitForm, backFn, formValues }) => {
+  const [_formValues, _setFormValues] = React.useState(formValues || { age: "", phone: "" });
+  const [formKey, setFormKey] = React.useState(0);
+
+  React.useEffect(() => {
+    setFormKey(formKey + 1)
+    if (formValues) _setFormValues(formValues);
+    else _setFormValues({ age: "", phone: "" });
+  },[formValues]);
+  
+
+  const onSubmit = values => {
+    console.log('Form data', values)
+    nextFn();
+    submitForm(values);
   }
-  //useForm
-  const { handleChange, handleSubmit, values, errors, validate } = useForm({
-    callback: (values) => {
-      submitForm(values);
-      nextFn();
-    },
-    onChange: validateFn,
-    errorsCallback: (values) => (values),
-    validate: validateFn,
-    formBody: { age: "", phone: "" },
-  });
-  //useForm
-
+  
   return (
     <>
-      <form>
-        <div className="animate-fade-in">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {errors.age === null && (<Check className="validate-icon icon-success" />)}
-              {errors.age && (<Close className="validate-icon icon-error" />)}
-              <TextField type="*number" helperText={errors.age} label="edad" autoFocus onChange={(e) => handleChange('age', e.target.value)} className={errors.age !== null ? "error-field" : "success-field"} error={errors.age} variant="outlined" />
-            </Grid>
-            <Grid item xs={12}>
-              {errors.phone === null && (<Check className="validate-icon icon-success" />)}
-              {errors.phone && (<Close className="validate-icon icon-error" />)}
-              <TextField type="*number" helperText={errors.phone} label="telefono" onChange={(e) => handleChange('phone', e.target.value)} className={errors.phone !== null ? "error-field" : "success-field"} error={errors.phone} variant="outlined" />
-            </Grid>
-            
+      <FormControl initialValues={_formValues} onSubmit={onSubmit} key={formKey}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <FormField name="age" label="Edad" type="text" />
           </Grid>
-          <div className="mt-4">
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-            
-                <Button
-                  disabled={false}
-                  onClick={backFn}
-                  variant="outlined" color="primary"
-                >
-                  Atras
-              </Button>
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
-                  Continuar
-              </Button>
-             
-            </Grid>
-          </div>
-        </div>
-      </form>
+          <Grid item xs={12}>
+            <FormField name="phone" label="Telefono" type="text" />
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="contained" color="secondary" type="button" onClick={backFn} style={{ marginTop: 25 }}>
+              Volver
+          </Button>
+          <Button variant="contained" color="primary" type="submit" style={{ marginTop: 25 }}>
+              Continuar
+          </Button>
+        </Grid>
+
+      </FormControl>
     </>
   )
 }
