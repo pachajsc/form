@@ -5,13 +5,17 @@ import FormField from "../../../components-iebs/FormField"
 
 
 const AdmSecondStep =({ nextFn, submitForm, backFn, formValues }) => {
-  const [_formValues, _setFormValues] = React.useState(formValues || { age: "", phone: "" });
+  const [values, setValues] = React.useState(Object.assign({ 
+    age: "", 
+    phone: ""
+    }, 
+    formValues));
   const [formKey, setFormKey] = React.useState(0);
 
   React.useEffect(() => {
     setFormKey(formKey + 1)
-    if (formValues) _setFormValues(formValues);
-    else _setFormValues({ age: "", phone: "" });
+    if (formValues) setValues(formValues);
+    else setValues({ age: "", phone: "" });
   },[formValues]);
   
 
@@ -23,7 +27,7 @@ const AdmSecondStep =({ nextFn, submitForm, backFn, formValues }) => {
   
   return (
     <>
-      <FormControl initialValues={_formValues} onSubmit={onSubmit} key={formKey}>
+      <FormControl initialValues={values} onSubmit={onSubmit} key={formKey}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormField name="age" label="Edad" type="text" />

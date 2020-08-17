@@ -4,13 +4,18 @@ import FormControl from "../../../components-iebs/FormControl"
 import FormField from "../../../components-iebs/FormField"
 
 const AdmFirstStep = ({ nextFn, submitForm, formValues }) => {
-  const [_formValues, _setFormValues] = React.useState(formValues || { name: "", surname: "", email: "" });
+  const [values, setValues] = React.useState(Object.assign({ 
+    name: "", 
+    surname: "", 
+    email: ""
+    }, 
+    formValues));
   const [formKey, setFormKey] = React.useState(0);
 
   React.useEffect(() => {
     setFormKey(formKey + 1)
-    if (formValues) _setFormValues(formValues)
-    else _setFormValues({ name: "", surname: "", email: "" });
+    if (formValues) setValues(formValues)
+    else setValues({ name: "", surname: "", email: "" });
   },[formValues]);
 
   const onSubmit = values => {
@@ -21,7 +26,7 @@ const AdmFirstStep = ({ nextFn, submitForm, formValues }) => {
 
   return (
     <>
-      <FormControl initialValues={_formValues}  onSubmit={onSubmit} key={formKey}>
+      <FormControl initialValues={values}  onSubmit={onSubmit} key={formKey}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormField name="name" label="Nombre" type="text" />
