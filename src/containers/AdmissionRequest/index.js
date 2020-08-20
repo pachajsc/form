@@ -44,7 +44,7 @@ export default function AdmissionRequest({ match }) {
       slickRef.current.slickGoTo(0);
       setStep(0)
     }
-  }, [slickRef, step, form2]);  
+  }, [slickRef, step, form1]);  
 
 
 
@@ -79,23 +79,6 @@ export default function AdmissionRequest({ match }) {
     slickRef.current.slickGoTo(0);
   };
 
-  /*
-  const handleFinish = () => {
-    setActiveStep(2);
-  }
-  */
-  /*
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-  */
-  /*
-  const handleReset = () => {
-    setActiveStep(0);
-    setForm1(null)
-    setForm2(null)
-  };
-  */
   const getStepContent = (stepIndex) => {
     switch (stepIndex) {
       case 0:

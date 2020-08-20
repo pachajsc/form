@@ -1,16 +1,16 @@
 
-export function helperValidateProgram(errors, program){
-    if (!program) {errors.program = "Debes seleccionar un programa.";} else {errors.program = null} 
+// export function helperValidateProgram(errors, programa_id){
+//     if (!programa_id) {errors.programa_id = "Debes seleccionar un programa.";} else {errors.programa_id = null} 
+//     return errors
+// }
+
+export function helperValidateName(errors, firstName){
+    if (!firstName) {errors.firstName = "El campo 'Nombre' es obligatorio.";} else{errors.firstName = null}
     return errors
 }
 
-export function helperValidateName(errors, name){
-    if (!name) {errors.name = "El campo 'Nombre' es obligatorio.";} else{errors.name = null}
-    return errors
-}
-
-export function helperValidateSurname(errors, surname){
-    if (!surname) {errors.surname = "El campo 'Apellidos' es obligatorio.";} else{errors.surname = null}
+export function helperValidateSurname(errors, lastName){
+    if (!lastName) {errors.lastName = "El campo 'Apellido' es obligatorio.";} else{errors.lastName = null}
     return errors
 }
 
@@ -23,20 +23,20 @@ export function helperValidateEmail(errors, email){
       return errors
 }
 
-export function helperValidateAge(errors, age){
-    if (!age) {errors.age = "El campo 'Edad' es obligatorio.";} else{errors.age = null}
+export function helperValidateAge(errors, birthDay){
+    if (!birthDay) {errors.birthDay = "El campo 'Edad' es obligatorio.";} else{errors.birthDay = null}
     return errors
 }
 
- export function helperValidatePhone(errors, phone){
-     if (!phone) {errors.phone = "El campo 'Teléfono Principal' es obligatorio.";} else 
-     if (phone.length !== 11) {errors.phone  = "El campo 'Telefono' es inválido."} else{errors.phone = null}
+ export function helperValidatePhone(errors, phoneNumber){
+     if (!phoneNumber) {errors.phoneNumber = "El campo 'Teléfono Principal' es obligatorio.";} else 
+     if (phoneNumber.length !== 11) {errors.phoneNumber  = "El campo 'Telefono' es inválido."} else{errors.phoneNumber = null}
      return errors
  }
 
 
 
-export function helperValidateAccept(errors, accept){
-    if (!accept) {errors.accept = "Debe aceptar los términos del servicio y la política de privacidad.";} else{errors.accept = null}
+export function helperValidateAccept(errors, source){
+    if (!source) {errors.source = "Debe aceptar los términos del servicio y la política de privacidad.";} else{errors.source = null}
     return errors
 }

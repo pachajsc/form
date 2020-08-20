@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { phoneItems } from "../../mock/country"
 import { Check, Close } from '@material-ui/icons';
-import InputPhone from "../../components/InputPhone"
+import InputPhone from "../../components/InputPhone";
+
 import {
   helperValidateProgram,
   helperValidateName,
@@ -14,85 +15,119 @@ import {
 } from "../../helper/formValidation";
 import { Alert } from '@material-ui/lab';
 import useForm from "../../helper/useForm"
-import { TextField, Button, Checkbox, Typography, Grid, FormControl, InputLabel, Link, Select } from '@material-ui/core';
+import { TextField,Radio, RadioGroup,FormControlLabel, Button, Checkbox, Typography, Grid, FormControl, InputLabel, Link, Select } from '@material-ui/core';
 
 //validate
 function formValidateFn(values) {
   let errors = {};
-  helperValidateProgram(errors, values.program);
-  helperValidateName(errors, values.name);
-  helperValidateSurname(errors, values.surname);
+  //helperValidateProgram(errors, values.programa_id);
+  helperValidateName(errors, values.firstName);
+  helperValidateSurname(errors, values.lastName);
   helperValidateEmail(errors, values.email);
-  helperValidateAge(errors, values.age);
-  helperValidatePhone(errors, values.phone)
-  helperValidateAccept(errors, values.accept);
+  helperValidateAge(errors, values.birthDay);
+  helperValidatePhone(errors, values.phoneNumber)
+  helperValidateAccept(errors, values.source);
 
   return errors;
 }
 //validate
 
 const RequestInfo = (props) => {
+ 
   const [notification, setNotification] = React.useState({ active: false });
-  const [activeSelect, setactiveSelect] = React.useState(false);
-  const [data, setData] = React.useState([]);
+  const [notificationError, setNotificationError] = React.useState({ active: false });
+  const [file, setFile] = React.useState(null);
 
   //useForm
   const { handleChange, handleChecked, handleSubmit, values, errors, validate } = useForm({
     callback: formValidated,
     errorsCallback: (values) => (values),
     validate: formValidateFn, // TODO PONER VALIDADOR
-    formBody: { program: "", name: "", surname: "", email: "", age: "", phoneItem: phoneItems[0], phone: "", questions: "Estoy interesado en recibir el folleto de este programa y quiero preguntar...", accept: "" },
+    formBody: {
+      //programa_id: "", 
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      birthDay: "",
+      gender: "",
+      //phoneItem: phoneItems[0],
+      //comentario: "Estoy interesado en recibir el folleto de este programa y quiero preguntar...",
+      terminos: "",
+      file: null
+    },
   });
   //useForm
 
-  //Action
-  function formValidated() {
+  //file
+  // const onChangeHandler = event => {
+  //   setFile(event.target.files[0])
+  //   const dataFile = {
+  //     file: file.name,
+  //     name: "this is a test",
+  //     main: true
+  //   }
+  //   axios.post(`http://64.227.11.198/api/file/`, { dataFile })
+  //   .then(response => console.log(response))
+  //   .catch(err => setNotificationError({active:true}));
+  // }
+  // console.log(file)
+  //file
+ 
+  const onChangeHandler = event => {
+       setFile(event.target.files[0])
+  }
+  //data
+  function formValidated(dataFile) {
     setNotification({ active: true });
-
+    console.log(file)
 
     const data = {
-      program: values.program,
-      name: values.name,
-      surname: values.surname,
+      //programa_id: values.programa_id,
+      firstName: values.firstName,
+      lastName: values.lastName,
       email: values.email,
-      age: values.age,
-      phoneItem: values.phoneItem,
-      phone: values.phone,
-      questions: values.questions,
-      accept: values.accept
+      birthDay: values.birthDay,
+      //phoneItem: values.phoneItem,
+      phoneNumber: values.phoneNumber,
+      //comentario: values.comentario,
+      gender: values.gender,
+      source: values.source === true ? "UTIE" : false,
+      file: {file:file.name, name:"test", main:true},
     };
 
-    axios.post(`https://jsonplaceholder.typicode.com/users`, { data })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        window.location = "https://www.utie.com.mx/programas/maestria-oficial-marketing-digital-business/gracias/?uuid=51d52b8c-ab26-4125-a215-1c1e55e891d4&registro_id=2087824&gracias=gracias&giebs=frm_inf&chiebs=iebs&freeiebs=no&id_int=&is_new_item=true";
-       
-      })
+    axios.post(`http://64.227.11.198/api/customer-information/`, { data })
+      .then(response => console.log(response))
+      .catch(err => setNotificationError({ active: true }));
   }
+  //data
+
+
+
 
   return (
     <>
+
       {/* {JSON.stringify(values, null, 2)} */}
       <form onSubmit={handleSubmit}>
 
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <FormControl variant="outlined" className={errors.program === null ? "success-field" : null}>
-              {errors.program === null && <Check className="validate-icon icon-success" />}
-              {errors.program && <Close className="validate-icon icon-error" />}
+          {/* <Grid item xs={12}>
+            <FormControl variant="outlined" className={errors.programa_id === null ? "success-field" : null}>
+              {errors.programa_id === null && <Check className="validate-icon icon-success" />}
+              {errors.programa_id && <Close className="validate-icon icon-error" />}
               <InputLabel htmlFor="outlined-age-native-simple">Escoge un programa</InputLabel>
               <Select
                 native
-                className={errors.program && "error-field"}
-                error={errors.program && true}
-                name="utie_ampliado_pack[programa_id]"
+                className={errors.programa_id && "error-field"}
+                error={errors.programa_id && true}
+                name="programa_id"
                 id="selector_programa"
-                value={values.program}
-                onChange={(e) => handleChange('program', e.target.value)}
+                value={values.programa_id}
+                onChange={(e) => handleChange('programa_id', e.target.value)}
                 label="Escoge un programa"
                 inputProps={{
-                  name: 'program',
+                  name: 'programa_id',
                   id: 'outlined-age-native-simple',
                 }}
 
@@ -103,40 +138,43 @@ const RequestInfo = (props) => {
                 <option value={2021}>Maestría en Mercadotecnia Digital</option>
                 <option value={2020}>Maestría MBA en Negocios Digitales</option>
               </Select>
-              <Typography variant="caption" defaultValue="Success" color="error" className="error-select" component="p">{errors.program}</Typography>
+              <Typography variant="caption" defaultValue="Success" color="error" className="error-select" component="p">{errors.programa_id}</Typography>
             </FormControl>
+          </Grid>  */}
+          <Grid item xs={12}>
+            {errors.firstName === null && <Check className="validate-icon icon-success" />}
+            {errors.firstName && <Close className="validate-icon icon-error" />}
+            <TextField error={errors.firstName && true} helperText={errors.firstName} onChange={(e) => handleChange('firstName', e.target.value)} name="firstName" id="utie_ampliado_pack_firstName" label={"Tu nombre:"} variant="outlined" className={errors.firstName !== null ? "error-field" : "success-field"} />
           </Grid>
           <Grid item xs={12}>
-            {errors.name === null && <Check className="validate-icon icon-success" />}
-            {errors.name && <Close className="validate-icon icon-error" />}
-            <TextField error={errors.name && true} helperText={errors.name} onChange={(e) => handleChange('name', e.target.value)} name="utie_ampliado_pack[nombre]" id="utie_ampliado_pack_nombre" label="Tu nombre:" variant="outlined" className={errors.name !== null ? "error-field" : "success-field"} />
-          </Grid>
-          <Grid item xs={12}>
-            {errors.surname === null && <Check className="validate-icon icon-success" />}
-            {errors.surname && <Close className="validate-icon icon-error" />}
-            <TextField error={errors.surname && true} helperText={errors.surname} onChange={(e) => handleChange('surname', e.target.value)} label="Tu apellido:" variant="outlined" name="utie_ampliado_pack[apellido]" id="utie_ampliado_pack_apellido" className={errors.surname !== null ? "error-field" : "success-field"} />
+            {errors.lastName === null && <Check className="validate-icon icon-success" />}
+            {errors.lastName && <Close className="validate-icon icon-error" />}
+            <TextField error={errors.lastName && true} helperText={errors.lastName} onChange={(e) => handleChange('lastName', e.target.value)} label={"Tu apellido:"} variant="outlined" name="lastName" id="utie_ampliado_pack_lastName" className={errors.lastName !== null ? "error-field" : "success-field"} />
           </Grid>
           <Grid item xs={12}>
             {errors.email === null && <Check className="validate-icon icon-success" />}
             {errors.email && <Close className="validate-icon icon-error" />}
-            <TextField error={errors.email && true} helperText={errors.email} onChange={(e) => handleChange('email', e.target.value)} label="Tu email" variant="outlined" name="utie_ampliado_pack[email]" id="utie_ampliado_pack_email" className={errors.email !== null ? "error-field" : "success-field"} />
+            <TextField error={errors.email && true} helperText={errors.email} onChange={(e) => handleChange('email', e.target.value)} label={"Tu email:"} variant="outlined" name="email" id="utie_ampliado_pack_email" className={errors.email !== null ? "error-field" : "success-field"} />
           </Grid>
           <Grid item xs={12}>
-            <FormControl variant="outlined" className={errors.age === null && "success-field"}>
-              {errors.age === null && <Check className="validate-icon icon-success" />}
-              {errors.age && <Close className="validate-icon icon-error" />}
+            <InputPhone success={errors.phoneNumber === null} error={errors.phoneNumber} onChangeSelect={(phoneItem) => handleChange('phoneItem', phoneItem)} onChangeInput={(e) => handleChange('phoneNumber', e.target.value)} countryValue={values.phoneItem || 0} phoneValue={values.phoneNumber} errors={errors} />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl variant="outlined" className={errors.birthDay === null && "success-field"}>
+              {errors.birthDay === null && <Check className="validate-icon icon-success" />}
+              {errors.birthDay && <Close className="validate-icon icon-error" />}
               <InputLabel htmlFor="outlined-age-native-simple">Selecciona tu edad</InputLabel>
               <Select
                 native
-                error={errors.age && true}
-                className={errors.age && "error-field"}
-                name="utie_ampliado_pack[edad]"
-                id="utie_ampliado_pack_edad"
-                onChange={(e) => handleChange('age', e.target.value)}
+                error={errors.birthDay && true}
+                className={errors.birthDay && "error-field"}
+                name="birthDay"
+                id="utie_ampliado_pack_birthDay"
+                onChange={(e) => handleChange('birthDay', e.target.value)}
                 label="Selecciona tu edad"
-                value={values.age}
+                value={values.birthDay}
                 inputProps={{
-                  name: 'age',
+                  name: 'birthDay',
                   id: 'outlined-age-native-simple',
                 }}
               >
@@ -145,17 +183,24 @@ const RequestInfo = (props) => {
                   return Array.from(Array(60), (_, i) => i + 21).map(i => <option value={i}>{i}</option>)
                 })()}
               </Select>
-              <Typography variant="caption" color="error" className="error-select" component="p">{errors.age}</Typography>
+              <Typography variant="caption" color="error" className="error-select" component="p">{errors.birthDay}</Typography>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <InputPhone success={errors.phone === null} error={errors.phone} onChangeSelect={(phoneItem) => handleChange('phoneItem', phoneItem)} onChangeInput={(e) => handleChange('phone', e.target.value)} countryValue={values.phoneItem || 0} phoneValue={values.phone} errors={errors} />
+            <Typography variant="label" component="label" className="mr-4">Genero: </Typography>
+            <RadioGroup row  aria-label="gender" name="gender"  onChange={(e) => handleChange('gender', e.target.value)}>
+              <FormControlLabel value="0" control={<Radio color="primary" />} label="M" />
+              <FormControlLabel value="1" control={<Radio color="primary" />} label="F" />
+            </RadioGroup>
           </Grid>
+           {/*<Grid item xs={12}>
+            <TextField label="" onChange={(e) => handleChange('comentario', e.target.value)} value={values.comentario} name="comentario" id="utie_ampliado_pack_comentario" placeholder="Estoy interesado en recibir el folleto de este programa y quiero preguntar..." variant="outlined" multiline rows={4} /> 
+          </Grid>*/}
           <Grid item xs={12}>
-            <TextField label="" onChange={(e) => handleChange('questions', e.target.value)} value={values.questions} name="utie_ampliado_pack[comentario]" id="utie_ampliado_pack_comentario" placeholder="Estoy interesado en recibir el folleto de este programa y quiero preguntar..." variant="outlined" multiline rows={4} />
+             <input type="file" name="file" onChange={onChangeHandler} /> 
           </Grid>
         </Grid>
-        {errors.accept && (
+        {errors.source && (
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Alert severity="error">
@@ -164,32 +209,44 @@ const RequestInfo = (props) => {
             </Grid>
           </Grid>
         )}
+
         <Grid container spacing={2}>
 
 
           <Grid item xs={12}>
             <Typography variant="body1" component="p" >
               <Checkbox
-                checked={!!values.accept}
-                error={errors.accept && true}
-                className={errors.accept && "check-error"}
-                name="utie_ampliado_pack[terminos]"
-                id="utie_ampliado_pack_terminos"
+                checked={!!values.source}
+                error={errors.source && true}
+                className={errors.source && "check-error"}
+                name="source"
+                id="utie_ampliado_pack_source"
                 color="primary"
-                onChange={(e) => handleChecked('accept', e.target.checked)}
+                onChange={(e) => handleChecked('source', e.target.checked)}
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
-                            He leído y acepto los <Link href="https://www.utie.com.mx/terminos/" target="_blank">términos del servicio y la política de privacidad</Link>.
-                        </Typography>
+                He leído y acepto los <Link href="https://www.utie.com.mx/terminos/" target="_blank">términos del servicio y la política de privacidad</Link>.
+            </Typography>
           </Grid>
-          {notification.active && (
-            <Grid item xs={12}>
-              <Alert severity="success">
-                Datos enviados con exito
+          <>
+            {notification.active && !notificationError.active && (
+              <Grid item xs={12}>
+                <Alert severity="success">
+                  Datos enviados con exito
               </Alert>
-            </Grid>
+              </Grid>
 
-          )}
+            )}
+          </>
+          <>
+            {notificationError.active && (
+              <Grid item xs={12}>
+                <Alert severity="error">
+                  Problemas del servidor
+              </Alert>
+              </Grid>
+            )}
+          </>
           <Grid item xs={12}>
             <Grid container
               direction="row"
