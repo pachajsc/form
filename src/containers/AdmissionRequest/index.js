@@ -3,8 +3,10 @@ import AdmFirstStep from "./AdmFirstStep"
 import AdmSecondStep from "./AdmSecondStep"
 import { Typography, Grid, Button, Stepper, Step, StepLabel } from '@material-ui/core';
 import Slider from "react-slick";
+import { FormContext } from '../../contexts/formContext';
 
 export default function AdmissionRequest({ match }) {
+  const context = React.useContext(FormContext);
 
   const [step, setStep] = React.useState(null);
 
@@ -28,25 +30,23 @@ export default function AdmissionRequest({ match }) {
   };
 
   
-  
-  const [activeStep, setActiveStep] = React.useState(0);
   const [form1, setForm1] = React.useState(JSON.parse(localStorage.getItem('form1')) || null);
   const [form2, setForm2] = React.useState(JSON.parse(localStorage.getItem('form2')) || null);
-
+  
+  /*
   React.useEffect(() => {
     setStep(match.params.step - 1)
   }, []);
+  */
 
   React.useEffect(() => {
     if(slickRef && step === 1) slickRef.current.slickGoTo(0);
     if(slickRef && step === 2 && form1) slickRef.current.slickGoTo(1);
     else {
       slickRef.current.slickGoTo(0);
-      setStep(0)
+      // setStep(0)
     }
   }, [slickRef, step, form1]);  
-
-
 
   React.useEffect(() => {
     if (form1) { 
@@ -64,7 +64,6 @@ export default function AdmissionRequest({ match }) {
 
   const handleNext = () => {
     slickRef.current.slickNext();
-    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -79,33 +78,11 @@ export default function AdmissionRequest({ match }) {
     slickRef.current.slickGoTo(0);
   };
 
-  const getStepContent = (stepIndex) => {
-    switch (stepIndex) {
-      case 0:
-        return (
-          <>
-            <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>1</strong> Datos Personales</Typography>
-            <AdmFirstStep formValues={form1 || undefined} submitForm={(form1) => setForm1(form1)} nextFn={handleNext} backFn={handleBack} />
-          </>
-        );
-      case 1:
-        return (
-          <>
-            <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>2</strong> Datos Complementarios</Typography>
-            <AdmSecondStep submitForm={(form2) => setForm2(form2)} backFn={handleBack} nextFn={handleNext} backFn={handleBack} />
-          </>
-        );
-      default:
-        return '';
-    }
-  }
-
-
   return (
     <div style={{ maxWidth: "1140px", margin: "20px auto" }}>
 
       <Typography component="h4" variant="h4" align="center" color="primary" className="mb-4" style={{ fontWeight: 100 }}>Solicitud de Admisión</Typography>
-      <Stepper activeStep={step} alternativeLabel >
+      <Stepper activeStep={context.activeStepValue} alternativeLabel >
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -114,7 +91,9 @@ export default function AdmissionRequest({ match }) {
       </Stepper>
       <Grid container>
         <Grid item xs={12}>
-          {activeStep === steps.length && (
+          {context.activeStepValue === steps.length && (
+            <>
+            { /*
             <Grid
               container
               spacing={3}
@@ -125,18 +104,22 @@ export default function AdmissionRequest({ match }) {
               <Typography contained="h5" variant="h5" className="mb-3">Flujo terminado</Typography>
               <Button onClick={handleReset} color="primary" variant="contained">Volver al inicio</Button>
             </Grid>
+            */ }
+            <Button variant="contained" color="secondary" type="button" onClick={handleBack} style={{ marginTop: 25 }}>
+                Volver
+            </Button>
+            </>
           )}
-
         </Grid>
       </Grid>
       <Slider {...settings} ref={slickRef}>
         <div>
           <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>1</strong> Datos Personales</Typography>
-          <AdmFirstStep formValues={form1 || undefined} submitForm={(form1) => setForm1(form1)} nextFn={handleNext} backFn={handleBack} />
+          <AdmFirstStep formValues={form1 || undefined} nextFn={handleNext} backFn={handleBack} />
         </div>
         <div>
           <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>2</strong> Datos Complementarios</Typography>
-          <AdmSecondStep formValues={form2 || undefined} submitForm={(form2) => setForm2(form2)} nextFn={handleNext} backFn={handleBack} />
+          <AdmSecondStep formValues={form2 || undefined} nextFn={handleNext} backFn={handleBack} />
         </div>
         <div>
           {(form1 && form2 && (
@@ -166,16 +149,13 @@ export default function AdmissionRequest({ match }) {
           ))}
         </div>
       </Slider>
-      <Grid container>
-        <Grid item xs={12}>
-          { /* 
-          
-          <div>{getStepContent(activeStep)}</div>
 
-          */ }
-
-        </Grid>
-      </Grid >
+      <div className="json-parsed">
+        <p>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+        <br/>
+        {JSON.stringify(context.formValue)}
+      </div>
+      
     </div >
   );
 }

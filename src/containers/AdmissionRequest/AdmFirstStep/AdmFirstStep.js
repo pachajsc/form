@@ -2,8 +2,12 @@ import React from "react";
 import { TextField, Grid, Button } from '@material-ui/core';
 import FormControl from "../../../components-iebs/FormControl"
 import FormField from "../../../components-iebs/FormField"
+import { FormContext } from '../../../contexts/formContext';
 
-const AdmFirstStep = ({ nextFn, submitForm, formValues }) => {
+const AdmFirstStep = ({ nextFn, formValues }) => {
+
+  const context = React.useContext(FormContext);
+
   const [values, setValues] = React.useState(Object.assign({ 
     name: "", 
     surname: "", 
@@ -18,10 +22,18 @@ const AdmFirstStep = ({ nextFn, submitForm, formValues }) => {
     else setValues({ name: "", surname: "", email: "" });
   },[formValues]);
 
+  React.useEffect(() => {
+    const { name, surname, email } = context.formValue;
+    console.log('SE VAN A ACTUALIZAR LOS DATOS CON',name, surname, email)
+    setValues({ name, surname, email })
+  },[context]);
+
   const onSubmit = values => {
     console.log('Form data', values)
     nextFn();
-    submitForm(values);
+    context.updateFormValues(values, 1);
+
+    // submitForm(values);
   }
 
   return (

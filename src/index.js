@@ -8,6 +8,8 @@ import { theme } from "./assets/styles/theming"
 import "./assets/styles/main.scss"
 import { BrowserRouter, Router, Switch, Route, withRouter } from "react-router-dom";
 
+import FormContextTag from './contexts/formContext';
+
 export const App = withRouter(({ location }) => {
   return (
     <Switch location={location}>
@@ -20,7 +22,9 @@ export const App = withRouter(({ location }) => {
 ReactDOM.render(
   <ThemeProvider theme={theme}>
      <BrowserRouter>
-      <App />
+      <FormContextTag>
+        <App />
+      </FormContextTag>
     </BrowserRouter> 
     {/* <RequestInfo/> */}
   </ThemeProvider>
