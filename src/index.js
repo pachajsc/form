@@ -19,10 +19,10 @@ export const App = withRouter(({ location }) => {
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    {/* <BrowserRouter>
+     <BrowserRouter>
       <App />
-    </BrowserRouter> */}
-    <RequestInfo/>
+    </BrowserRouter> 
+    {/* <RequestInfo/> */}
   </ThemeProvider>
   ,
   document.getElementById('root')
