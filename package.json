@@ -2,7 +2,7 @@
   "name": "form",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://localhost:3000/form-info",
+  "homepage": "/",
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@date-io/date-fns": "^1.3.13",

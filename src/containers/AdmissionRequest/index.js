@@ -17,39 +17,35 @@ export default function AdmissionRequest({ match }) {
   const slickRef = React.createRef();
 
   var settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    speed: 0,
+    /*
+    vertical: true,
+    */
     draggable: false,
     swipe: false,
     arrows: false,
     autoPlay: false,
-    accessibility: false
+    accessibility: false,
   };
 
-  
-  const [form1, setForm1] = React.useState(JSON.parse(localStorage.getItem('form1')) || null);
-  const [form2, setForm2] = React.useState(JSON.parse(localStorage.getItem('form2')) || null);
-  
-  /*
   React.useEffect(() => {
     setStep(match.params.step - 1)
   }, []);
-  */
-
+  
   React.useEffect(() => {
-    if(slickRef && step === 1) slickRef.current.slickGoTo(0);
-    if(slickRef && step === 2 && form1) slickRef.current.slickGoTo(1);
+    if (slickRef && step === 1) slickRef.current.slickGoTo(0);
+    if (slickRef && step === 2) slickRef.current.slickGoTo(1);
     else {
       slickRef.current.slickGoTo(0);
       // setStep(0)
     }
-  }, [slickRef, step, form1]);  
+  }, [slickRef, step]);
 
+  /*
   React.useEffect(() => {
-    if (form1) { 
+    if (form1) {
       localStorage.setItem('form1', JSON.stringify(form1));
       slickRef.current.slickGoTo(1);
     }
@@ -58,29 +54,27 @@ export default function AdmissionRequest({ match }) {
   React.useEffect(() => {
     if (form2) localStorage.setItem('form2', JSON.stringify(form2));
   }, [form2]);
-
+  */
 
   const steps = getSteps();
 
-  const handleNext = () => {
+  const handleNext = (a,b,c) => {
     slickRef.current.slickNext();
   };
 
-  const handleBack = () => {
+  const handleBack = (a,b,c) => {
     slickRef.current.slickPrev();
   };
 
   const handleReset = () => {
     localStorage.clear('form1');
     localStorage.clear('form2');
-    setForm1(null);
-    setForm2(null);
+    context.resetFormValues();
     slickRef.current.slickGoTo(0);
   };
 
   return (
     <div style={{ maxWidth: "1140px", margin: "20px auto" }}>
-
       <Typography component="h4" variant="h4" align="center" color="primary" className="mb-4" style={{ fontWeight: 100 }}>Solicitud de Admisión</Typography>
       <Stepper activeStep={context.activeStepValue} alternativeLabel >
         {steps.map((label) => (
@@ -93,7 +87,7 @@ export default function AdmissionRequest({ match }) {
         <Grid item xs={12}>
           {context.activeStepValue === steps.length && (
             <>
-            { /*
+              { /*
             <Grid
               container
               spacing={3}
@@ -105,7 +99,7 @@ export default function AdmissionRequest({ match }) {
               <Button onClick={handleReset} color="primary" variant="contained">Volver al inicio</Button>
             </Grid>
             */ }
-            <Button variant="contained" color="secondary" type="button" onClick={handleBack} style={{ marginTop: 25 }}>
+              <Button variant="contained" color="secondary" type="button" onClick={handleBack} style={{ marginTop: 25 }}>
                 Volver
             </Button>
             </>
@@ -115,29 +109,29 @@ export default function AdmissionRequest({ match }) {
       <Slider {...settings} ref={slickRef}>
         <div>
           <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>1</strong> Datos Personales</Typography>
-          <AdmFirstStep formValues={form1 || undefined} nextFn={handleNext} backFn={handleBack} />
+          <AdmFirstStep nextFn={handleNext} backFn={handleBack} />
         </div>
         <div>
           <Typography className="animate-fade-in" component="h4" variant="h4" style={{ padding: "0 20px", marginTop: "15px", display: "block" }}><strong>2</strong> Datos Complementarios</Typography>
-          <AdmSecondStep formValues={form2 || undefined} nextFn={handleNext} backFn={handleBack} />
+          <AdmSecondStep nextFn={handleNext} backFn={handleBack} />
         </div>
         <div>
-          {(form1 && form2 && (
+          {(context.formValue && (
             <div>
               <p>
-                Nombre: <strong>{form1.name}</strong>
+                Nombre: <strong>{context.formValue.name}</strong>
               </p>
               <p>
-                Apellido: <strong>{form1.surname}</strong>
+                Apellido: <strong>{context.formValue.surname}</strong>
               </p>
               <p>
-                Email: <strong>{form1.email}</strong>
+                Email: <strong>{context.formValue.email}</strong>
               </p>
               <p>
-                Edad: <strong>{form2.age}</strong>
+                Edad: <strong>{context.formValue.age}</strong>
               </p>
               <p>
-                Telefono: <strong>{form2.phone}</strong>
+                Telefono: <strong>{context.formValue.phone}</strong>
               </p>
               <Button variant="contained" color="secondary" type="button" onClick={handleBack} style={{ marginTop: 25 }}>
                 Volver
@@ -152,10 +146,10 @@ export default function AdmissionRequest({ match }) {
 
       <div className="json-parsed">
         <p>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
-        <br/>
+        <br />
         {JSON.stringify(context.formValue)}
       </div>
-      
+
     </div >
   );
 }

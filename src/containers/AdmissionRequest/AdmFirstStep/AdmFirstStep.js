@@ -5,7 +5,7 @@ import FormField from "../../../components-iebs/FormField"
 import { FormContext } from '../../../contexts/formContext';
 
 const AdmFirstStep = ({ nextFn, formValues }) => {
-
+  let resetForm;
   const context = React.useContext(FormContext);
 
   const [values, setValues] = React.useState(Object.assign({ 
@@ -25,7 +25,14 @@ const AdmFirstStep = ({ nextFn, formValues }) => {
   React.useEffect(() => {
     const { name, surname, email } = context.formValue;
     console.log('SE VAN A ACTUALIZAR LOS DATOS CON',name, surname, email)
-    setValues({ name, surname, email })
+    setValues({ name, surname, email });
+
+    let isFormEmpty = true;
+    Object.key(context.resetForm).map(fk => {
+      if(context.formValues[fk] !== '') isFormEmpty = false;
+      return fk;
+    })
+    if (resetForm) resetForm();
   },[context]);
 
   const onSubmit = values => {
@@ -38,7 +45,7 @@ const AdmFirstStep = ({ nextFn, formValues }) => {
 
   return (
     <>
-      <FormControl initialValues={values}  onSubmit={onSubmit} key={formKey}>
+      <FormControl initialValues={values} onSubmit={onSubmit} key={formKey} handleReset={resetForm}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormField name="name" label="Nombre" type="text" />

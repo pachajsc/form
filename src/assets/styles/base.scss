@@ -28,4 +28,12 @@ $mg4:20px;
 
 .slick-track {
   direction: ltr;
+  .slick-slide {
+    transition: all 2s ease;
+    opacity: 0;
+    &.slick-active {
+      opacity: 1;
+      z-index: 9;
+    }
+  }
 }
