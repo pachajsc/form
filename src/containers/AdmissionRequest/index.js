@@ -8,7 +8,7 @@ import { FormContext } from '../../contexts/formContext';
 export default function AdmissionRequest({ match }) {
   const context = React.useContext(FormContext);
 
-  const [step, setStep] = React.useState(null);
+  const [step, setStep] = React.useState(context.activeStepValue);
 
   const getSteps = () => {
     return [<strong>DATOS PERSONALES</strong>, <strong>DATOS ACADÉMICOS Y<br /> PROFESIONALES</strong>];
@@ -31,30 +31,26 @@ export default function AdmissionRequest({ match }) {
   };
 
   React.useEffect(() => {
-    setStep(match.params.step - 1)
+    console.log('aca aca');
+    const s = Number(match.params.step);
+    for (let index = s; index >= 0; index--) {
+      if (context.checkStep(index)) setStep(index);
+    }
   }, []);
   
   React.useEffect(() => {
+    console.log('entro aca con step', step)
     if (slickRef && step === 1) slickRef.current.slickGoTo(0);
     if (slickRef && step === 2) slickRef.current.slickGoTo(1);
+    if (slickRef && step === 3) slickRef.current.slickGoTo(2);
+
+    // if (slickRef && step) slickRef.current.slickGoTo(step - 1);
+
     else {
       slickRef.current.slickGoTo(0);
       // setStep(0)
     }
   }, [slickRef, step]);
-
-  /*
-  React.useEffect(() => {
-    if (form1) {
-      localStorage.setItem('form1', JSON.stringify(form1));
-      slickRef.current.slickGoTo(1);
-    }
-  }, [form1]);
-
-  React.useEffect(() => {
-    if (form2) localStorage.setItem('form2', JSON.stringify(form2));
-  }, [form2]);
-  */
 
   const steps = getSteps();
 

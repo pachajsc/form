@@ -4,27 +4,21 @@ import FormControl from "../../../components-iebs/FormControl"
 import FormField from "../../../components-iebs/FormField"
 import { FormContext } from '../../../contexts/formContext';
 
-const AdmSecondStep =({ nextFn, backFn, formValues }) => {
+const AdmSecondStep =({ nextFn, backFn }) => {
 
   const context = React.useContext(FormContext);
 
   const [values, setValues] = React.useState(Object.assign({ 
     age: "", 
     phone: ""
-    }, 
-    formValues));
+    }));
+    
   const [formKey, setFormKey] = React.useState(0);
-
-  React.useEffect(() => {
-    setFormKey(formKey + 1)
-    if (formValues) setValues(formValues);
-    else setValues({ age: "", phone: "" });
-  },[formValues]);
-  
 
   React.useEffect(() => {
     const { age, phone } = context.formValue;
     setValues({ age, phone })
+    setFormKey(formKey + 1);
   },[context]);
 
   const onSubmit = values => {
@@ -32,8 +26,12 @@ const AdmSecondStep =({ nextFn, backFn, formValues }) => {
     nextFn();
     context.updateFormValues(values, 2);
     // submitForm(values);
-  }
-  
+  } 
+  /*
+  React.useEffect(() => {
+    if (context.checkStep(1) === false) backFn();
+  }, []);
+  */
   return (
     <>
       <FormControl initialValues={values} onSubmit={onSubmit} key={formKey}>

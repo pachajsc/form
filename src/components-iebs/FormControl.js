@@ -8,7 +8,6 @@ function FormControl(props) {
       onSubmit={props.onSubmit}
     >
       {formik => {
-        if (props.handleReset) props.handleReset = formik.resetForm;
         console.log('formik props', formik)
         return (
           <Form>

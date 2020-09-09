@@ -4,35 +4,22 @@ import FormControl from "../../../components-iebs/FormControl"
 import FormField from "../../../components-iebs/FormField"
 import { FormContext } from '../../../contexts/formContext';
 
-const AdmFirstStep = ({ nextFn, formValues }) => {
+const AdmFirstStep = ({ nextFn }) => {
   let resetForm;
   const context = React.useContext(FormContext);
-
+  
   const [values, setValues] = React.useState(Object.assign({ 
     name: "", 
     surname: "", 
     email: ""
-    }, 
-    formValues));
+    }));
   const [formKey, setFormKey] = React.useState(0);
-
-  React.useEffect(() => {
-    setFormKey(formKey + 1)
-    if (formValues) setValues(formValues)
-    else setValues({ name: "", surname: "", email: "" });
-  },[formValues]);
 
   React.useEffect(() => {
     const { name, surname, email } = context.formValue;
     console.log('SE VAN A ACTUALIZAR LOS DATOS CON',name, surname, email)
     setValues({ name, surname, email });
-
-    let isFormEmpty = true;
-    Object.key(context.resetForm).map(fk => {
-      if(context.formValues[fk] !== '') isFormEmpty = false;
-      return fk;
-    })
-    if (resetForm) resetForm();
+    setFormKey(formKey + 1);
   },[context]);
 
   const onSubmit = values => {
@@ -42,10 +29,10 @@ const AdmFirstStep = ({ nextFn, formValues }) => {
 
     // submitForm(values);
   }
-
+  
   return (
     <>
-      <FormControl initialValues={values} onSubmit={onSubmit} key={formKey} handleReset={resetForm}>
+      <FormControl initialValues={values} onSubmit={onSubmit} key={formKey}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormField name="name" label="Nombre" type="text" />
